@@ -17,6 +17,29 @@
         <java.version>17</java.version>
     </properties>
 
+    <developers>
+        <developer>
+            <id>Leedris</id>
+            <name>Thomas Foenix Blondel</name>
+            <email>thomas.foenix-blondel@epita.fr</email>
+        </developer>
+        <developer>
+            <id>Vainthan</id>
+            <name>Margaux Cavalié</name>
+            <email>margaux.cavalie@epita.fr</email>
+        </developer>
+        <developer>
+            <id>marie.mtrn</id>
+            <name>Marie Maturana</name>
+            <email>marie.maturana@epita.fr</email>
+        </developer>
+        <developer>
+            <id>felix.ngo</id>
+            <name>Felix Ngo</name>
+            <email>felix.ngo@epita.fr</email>
+        </developer>
+    </developers>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
