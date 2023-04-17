@@ -1,4 +1,4 @@
-package com.epita.harrypotterapi.models;
+package com.epita.harrypotterapi.infrastructure.models;
 
 public enum RoomType {
     Potion,
