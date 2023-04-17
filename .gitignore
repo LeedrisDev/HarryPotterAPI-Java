@@ -239,5 +239,6 @@ $RECYCLE.BIN/
 
 # User defined
 .idea/*
+*.iml
 
 # End of https://www.toptal.com/developers/gitignore/api/macos,windows,visualstudiocode,intellij,java,maven
