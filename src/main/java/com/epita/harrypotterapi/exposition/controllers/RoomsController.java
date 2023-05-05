@@ -3,6 +3,7 @@ package com.epita.harrypotterapi.exposition.controllers;
 import com.epita.harrypotterapi.domain.service.IRoomService;
 import com.epita.harrypotterapi.exposition.request.RoomRequest;
 import com.epita.harrypotterapi.exposition.response.RoomResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 @RestController
+@Tag(name = "Rooms")
 public class RoomsController {
     private final IRoomService roomService;
 
@@ -19,7 +21,7 @@ public class RoomsController {
         this.roomService = roomService;
     }
 
-    @GetMapping("/rooms")
+    @GetMapping(value = "/rooms", produces = "application/json")
     public ResponseEntity<Collection<RoomResponse>> getRooms() {
         // TODO: Call RoomService
         var response = new ArrayList<RoomResponse>();
@@ -27,7 +29,7 @@ public class RoomsController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PostMapping("/rooms")
+    @PostMapping(value = "/rooms", produces = "application/json")
     public ResponseEntity<RoomResponse> createRoom(@RequestBody RoomRequest request) {
         // TODO: Call RoomService
         var response = new RoomResponse();
@@ -35,7 +37,7 @@ public class RoomsController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    @PostMapping("/rooms/csv")
+    @PostMapping(value = "/rooms/csv", produces = "application/json")
     public ResponseEntity<Collection<RoomResponse>> createRoomsFromCsv(@RequestParam("file")MultipartFile file) {
         // TODO: Call RoomService
         var response = new ArrayList<RoomResponse>();
