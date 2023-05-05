@@ -1,6 +1,5 @@
 package com.epita.harrypotterapi.domain.aggregate.reservation;
 
-import com.epita.harrypotterapi.infrastructure.models.RoomDatabaseEntity;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,5 +11,5 @@ public class ReservationAggregate {
     private int id;
     private Date startDate;
     private Date endDate;
-    private RoomDatabaseEntity room;
+    private ReservationAggregate room;
 }

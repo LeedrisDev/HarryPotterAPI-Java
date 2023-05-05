@@ -3,7 +3,6 @@ package com.epita.harrypotterapi.exposition.controllers;
 import com.epita.harrypotterapi.exposition.request.RoomReservationRequest;
 import com.epita.harrypotterapi.exposition.response.RoomAvailabilityResponse;
 import com.epita.harrypotterapi.exposition.response.RoomReservationResponse;
-import jakarta.websocket.server.PathParam;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,8 +22,8 @@ public class ReservationsController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping("/reservations/room/{roomName}")
-    public ResponseEntity<Collection<RoomReservationResponse>> getRoomReservations(@PathParam("roomName") String roomName) {
+    @GetMapping("/reservations/roomReservations/")
+    public ResponseEntity<Collection<RoomReservationResponse>> getRoomReservations(@RequestParam("roomName") String roomName) {
         // TODO: Call ReservationService
         var response = new ArrayList<RoomReservationResponse>();
 
