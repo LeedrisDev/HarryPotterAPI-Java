@@ -14,13 +14,14 @@ import java.util.Collection;
 @RestController
 public class RoomsController {
     private final IRoomService roomService;
-    
+
     public RoomsController(IRoomService roomService) {
         this.roomService = roomService;
     }
 
     @GetMapping("/rooms")
     public ResponseEntity<Collection<RoomResponse>> getRooms() {
+        // TODO: Call RoomService
         var response = new ArrayList<RoomResponse>();
 
         return new ResponseEntity<>(response, HttpStatus.OK);
@@ -28,6 +29,7 @@ public class RoomsController {
 
     @PostMapping("/rooms")
     public ResponseEntity<RoomResponse> createRoom(@RequestBody RoomRequest request) {
+        // TODO: Call RoomService
         var response = new RoomResponse();
 
         return new ResponseEntity<>(response, HttpStatus.CREATED);
@@ -35,6 +37,7 @@ public class RoomsController {
 
     @PostMapping("/rooms/csv")
     public ResponseEntity<Collection<RoomResponse>> createRoomsFromCsv(@RequestParam("file")MultipartFile file) {
+        // TODO: Call RoomService
         var response = new ArrayList<RoomResponse>();
 
         return new ResponseEntity<>(response, HttpStatus.CREATED);
