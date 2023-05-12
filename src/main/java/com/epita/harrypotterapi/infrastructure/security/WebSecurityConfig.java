@@ -25,9 +25,12 @@ public class WebSecurityConfig {
         http
                 .securityMatcher(new AntPathRequestMatcher("/api/**"))
                 .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers(DIRECTOR_URLS.toArray(new String[0])).hasRole("DIRECTOR")
+                        .requestMatchers(PROFESSOR_URLS.toArray(new String[0])).hasAnyRole("PROFESSOR", "DIRECTOR")
                         .requestMatchers(PUBLIC_URLS.toArray(new String[0])).permitAll()
-                );
-        http.formLogin(Customizer.withDefaults());
+                        .anyRequest().authenticated()
+                )
+                .formLogin(Customizer.withDefaults());
 
         return http.build();
     }
@@ -84,6 +87,15 @@ public class WebSecurityConfig {
     private static final List<String> PUBLIC_URLS = List.of(
             "/api/swagger",
             "/api/swagger-ui/**",
-            "/api/swagger-ui.html"
+            "/api/swagger-ui.html",
+            "/login"
+    );
+
+    private static final List<String> PROFESSOR_URLS = List.of(
+            "/api/reservations/room"
+    );
+
+    private static final List<String> DIRECTOR_URLS = List.of(
+            "/api/rooms/**"
     );
 }
