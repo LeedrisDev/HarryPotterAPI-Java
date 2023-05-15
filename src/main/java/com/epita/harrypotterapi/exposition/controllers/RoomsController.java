@@ -45,5 +45,5 @@ public class RoomsController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    // TODO: Add update and delete endpoints
+    // TODO: Add update and delete endpoints (maybe)
 }
