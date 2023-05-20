@@ -1,13 +1,14 @@
-package com.epita.harrypotterapi.domain.models;
+package com.epita.harrypotterapi.domain.models.room;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class Room {
     private String name;
     private RoomType type;
-    private int area;
-    private Date creationDate;
+    private double area;
+    private LocalDate creationDate;
     private String creatorName;
+    private Boolean isBookable;
 
     public String getName() {
         return name;
@@ -17,11 +18,11 @@ public class Room {
         return type;
     }
 
-    public int getArea() {
+    public double getArea() {
         return area;
     }
 
-    public Date getCreationDate() {
+    public LocalDate getCreationDate() {
         return creationDate;
     }
 
@@ -29,14 +30,19 @@ public class Room {
         return creatorName;
     }
 
+    public Boolean getBookable() {
+        return isBookable;
+    }
+
     private Room() { }
 
     public static class Builder {
         private String name;
         private RoomType type;
-        private int area;
-        private Date creationDate;
+        private double area;
+        private LocalDate creationDate;
         private String creatorName;
+        private Boolean isBookable;
 
         public Builder name(String name) {
             this.name = name;
@@ -45,15 +51,19 @@ public class Room {
 
         public Builder type(RoomType type) {
             this.type = type;
+            switch (type) {
+                case Potion, Spell, Herbology, Quidditch -> this.isBookable = true;
+                case Office, CommonRoom -> this.isBookable = false;
+            }
             return this;
         }
 
-        public Builder area(int area) {
+        public Builder area(double area) {
             this.area = area;
             return this;
         }
 
-        public Builder creationDate(Date creationDate) {
+        public Builder creationDate(LocalDate creationDate) {
             this.creationDate = creationDate;
             return this;
         }
@@ -70,6 +80,7 @@ public class Room {
             room.area = this.area;
             room.creationDate = this.creationDate;
             room.creatorName = this.creatorName;
+            room.isBookable = this.isBookable;
             return room;
         }
     }

@@ -1,4 +1,4 @@
-package com.epita.harrypotterapi.infrastructure.security;
+package com.epita.harrypotterapi.infrastructure.security.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
