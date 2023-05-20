@@ -16,6 +16,7 @@ public class WizardEntity {
     private WizardRole role;
 
     @OneToMany
+    @JoinColumn(name = "reservation_id")
     private List<ReservationEntity> reservations;
 
     public WizardEntity() { }

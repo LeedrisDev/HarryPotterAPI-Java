@@ -18,6 +18,7 @@ public class RoomEntity {
     private LocalDate creationDate;
     private String creatorName;
     @OneToMany
+    @JoinColumn(name = "reservation_id")
     private List<ReservationEntity> reservations;
 
     public RoomEntity() { }
