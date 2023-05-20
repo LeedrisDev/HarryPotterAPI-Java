@@ -1,13 +1,14 @@
 package com.epita.harrypotterapi.domain.models;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class Room {
     private String name;
     private RoomType type;
     private int area;
-    private Date creationDate;
+    private LocalDate creationDate;
     private String creatorName;
+    private Boolean isBookable;
 
     public String getName() {
         return name;
@@ -21,12 +22,16 @@ public class Room {
         return area;
     }
 
-    public Date getCreationDate() {
+    public LocalDate getCreationDate() {
         return creationDate;
     }
 
     public String getCreatorName() {
         return creatorName;
+    }
+
+    public Boolean getBookable() {
+        return isBookable;
     }
 
     private Room() { }
@@ -35,8 +40,9 @@ public class Room {
         private String name;
         private RoomType type;
         private int area;
-        private Date creationDate;
+        private LocalDate creationDate;
         private String creatorName;
+        private Boolean isBookable;
 
         public Builder name(String name) {
             this.name = name;
@@ -45,6 +51,10 @@ public class Room {
 
         public Builder type(RoomType type) {
             this.type = type;
+            switch (type) {
+                case Potion, Spell, Herbology, Quidditch -> this.isBookable = true;
+                case Office, CommonRoom -> this.isBookable = false;
+            }
             return this;
         }
 
@@ -53,7 +63,7 @@ public class Room {
             return this;
         }
 
-        public Builder creationDate(Date creationDate) {
+        public Builder creationDate(LocalDate creationDate) {
             this.creationDate = creationDate;
             return this;
         }
@@ -70,6 +80,7 @@ public class Room {
             room.area = this.area;
             room.creationDate = this.creationDate;
             room.creatorName = this.creatorName;
+            room.isBookable = this.isBookable;
             return room;
         }
     }
