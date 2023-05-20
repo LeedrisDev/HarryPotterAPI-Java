@@ -5,7 +5,7 @@ import java.time.LocalDate;
 public class Room {
     private String name;
     private RoomType type;
-    private int area;
+    private double area;
     private LocalDate creationDate;
     private String creatorName;
     private Boolean isBookable;
@@ -18,7 +18,7 @@ public class Room {
         return type;
     }
 
-    public int getArea() {
+    public double getArea() {
         return area;
     }
 
@@ -39,7 +39,7 @@ public class Room {
     public static class Builder {
         private String name;
         private RoomType type;
-        private int area;
+        private double area;
         private LocalDate creationDate;
         private String creatorName;
         private Boolean isBookable;
@@ -58,7 +58,7 @@ public class Room {
             return this;
         }
 
-        public Builder area(int area) {
+        public Builder area(double area) {
             this.area = area;
             return this;
         }
