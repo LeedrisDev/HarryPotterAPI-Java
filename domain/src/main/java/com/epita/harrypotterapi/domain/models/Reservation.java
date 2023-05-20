@@ -1,16 +1,28 @@
 package com.epita.harrypotterapi.domain.models;
 
 import com.epita.harrypotterapi.domain.exceptions.ReservationException;
+import com.epita.harrypotterapi.domain.models.room.Room;
+import com.epita.harrypotterapi.domain.models.wizard.Wizard;
 
 import java.time.LocalDate;
 
 public class Reservation {
+    private long id;
     private Room room;
+    private Wizard guest;
     private LocalDate beginDate;
     private LocalDate endDate;
 
+    public long getId() {
+        return id;
+    }
+
     public Room getRoom() {
         return room;
+    }
+
+    public Wizard getGuest() {
+        return guest;
     }
 
     public LocalDate getBeginDate() {
@@ -24,9 +36,16 @@ public class Reservation {
     private Reservation() { }
 
     public static class Builder {
+        private long id;
         private Room room;
+        private Wizard guest;
         private LocalDate beginDate;
         private LocalDate endDate;
+
+        public Builder id(long id) {
+            this.id = id;
+            return this;
+        }
 
         public Builder room(Room room, Boolean toBookReservation) throws ReservationException {
             switch (room.getType()) {
@@ -42,6 +61,11 @@ public class Reservation {
 
         public Builder room(Room room) throws ReservationException {
             this.room(room, false);
+            return this;
+        }
+
+        public Builder guest(Wizard guest) {
+            this.guest = guest;
             return this;
         }
 
@@ -70,7 +94,9 @@ public class Reservation {
 
         public Reservation build() {
             Reservation reservation = new Reservation();
+            reservation.id = this.id;
             reservation.room = this.room;
+            reservation.guest = this.guest;
             reservation.beginDate = this.beginDate;
             reservation.endDate = this.endDate;
             return reservation;
