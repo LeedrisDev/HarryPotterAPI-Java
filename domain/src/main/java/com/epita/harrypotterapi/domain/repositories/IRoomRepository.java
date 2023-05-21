@@ -7,5 +7,5 @@ import java.util.List;
 public interface IRoomRepository {
     List<Room> getAllRooms();
     Room CreateRoom(Room room);
-    void CreateRooms(List<Room> rooms);
+    List<Room> CreateRooms(List<Room> rooms);
 }

@@ -24,7 +24,7 @@ public class RoomService implements IRoomService {
         return roomRepository.CreateRoom(room);
     }
 
-    public void CreateRooms(List<Room> rooms) {
-        roomRepository.CreateRooms(rooms);
+    public List<Room> CreateRooms(List<Room> rooms) {
+        return roomRepository.CreateRooms(rooms);
     }
 }

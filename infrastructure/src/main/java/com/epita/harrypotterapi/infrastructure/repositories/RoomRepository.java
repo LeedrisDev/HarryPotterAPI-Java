@@ -30,8 +30,9 @@ public class RoomRepository implements IRoomRepository {
         return RoomsMapper.mapToDomain(savedEntity);
     }
 
-    public void CreateRooms(List<Room> rooms) {
+    public List<Room> CreateRooms(List<Room> rooms) {
         var entities = rooms.stream().map(RoomsMapper::mapToEntity).toList();
-        this.roomRepository.saveAll(entities);
+        var entitiesSaved = this.roomRepository.saveAll(entities);
+        return entitiesSaved.stream().map(RoomsMapper::mapToDomain).toList();
     }
 }
