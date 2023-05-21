@@ -35,7 +35,6 @@ public class RoomsController {
     private final IRoomService roomService;
     private final CsvParser csvParser;
     private final RoomsMapper mapper;
-    private final String username = "Dumbledore";
 
     @Autowired
     public RoomsController(IRoomService roomService, CsvParser csvParser, @Qualifier("Exposition.RoomsMapper") RoomsMapper mapper) {
@@ -63,10 +62,9 @@ public class RoomsController {
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class))
             )
     })
-    public ResponseEntity<?> createRoom(@RequestBody RoomRequest request, Principal principal) {
-
+    public ResponseEntity<?> createRoom(@RequestBody RoomRequest request, Principal user) {
         try {
-            var room = mapper.mapToDomain(request, username);
+            var room = mapper.mapToDomain(request, user.getName());
             var roomCreated = roomService.CreateRoom(room);
             var response = mapper.mapToResponse(roomCreated);
             return new ResponseEntity<>(response, HttpStatus.CREATED);
@@ -107,9 +105,9 @@ public class RoomsController {
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class))
             )
     })
-    public ResponseEntity<?> createRoomsFromCsv(@RequestParam("file")MultipartFile file) {
+    public ResponseEntity<?> createRoomsFromCsv(@RequestParam("file")MultipartFile file, Principal user) {
         try {
-            var rooms = csvParser.parseCsv(file, username);
+            var rooms = csvParser.parseCsv(file, user.getName());
             var roomsCreated = roomService.CreateRooms(rooms);
             var response = roomsCreated.stream().map(mapper::mapToResponse).toList();
             return new ResponseEntity<>(response, HttpStatus.CREATED);
