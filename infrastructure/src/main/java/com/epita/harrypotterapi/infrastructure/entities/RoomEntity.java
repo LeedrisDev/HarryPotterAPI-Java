@@ -1,16 +1,19 @@
 package com.epita.harrypotterapi.infrastructure.entities;
 
 
+import com.epita.harrypotterapi.domain.models.room.RoomType;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.util.List;
 
 @Entity
+@Table(name = "T_ROOMS")
 public class RoomEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(unique = true)
     private String name;
     @Enumerated(EnumType.STRING)
     private RoomType type;
@@ -77,5 +80,18 @@ public class RoomEntity {
 
     public void setReservations(List<ReservationEntity> reservations) {
         this.reservations = reservations;
+    }
+
+    @Override
+    public String toString() {
+        return "RoomEntity{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", type=" + type +
+                ", area=" + area +
+                ", creationDate=" + creationDate +
+                ", creatorName='" + creatorName + '\'' +
+                ", reservations=" + reservations +
+                '}';
     }
 }

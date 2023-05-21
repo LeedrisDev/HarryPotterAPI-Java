@@ -5,11 +5,13 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
+@Table(name = "T_WIZARDS")
 public class WizardEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+    @Column(unique = true)
     private String username;
     private String email;
     @Enumerated(EnumType.STRING)
