@@ -84,4 +84,16 @@ public class Room {
             return room;
         }
     }
+
+    @Override
+    public String toString() {
+        return "Room{" +
+                "name='" + name + '\'' +
+                ", type=" + type +
+                ", area=" + area +
+                ", creationDate=" + creationDate +
+                ", creatorName='" + creatorName + '\'' +
+                ", isBookable=" + isBookable +
+                '}';
+    }
 }

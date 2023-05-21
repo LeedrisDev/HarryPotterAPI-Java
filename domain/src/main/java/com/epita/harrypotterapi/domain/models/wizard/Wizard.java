@@ -25,10 +25,10 @@ public class Wizard {
     private Wizard() { }
 
     public static class Builder {
-        private String name;
+        private String name = "";
         private String username;
         private String email;
-        private WizardRole role;
+        private WizardRole role = null;
 
         public Builder name(String name) {
             this.name = name;
