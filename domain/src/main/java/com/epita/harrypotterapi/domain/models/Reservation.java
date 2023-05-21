@@ -36,7 +36,7 @@ public class Reservation {
     private Reservation() { }
 
     public static class Builder {
-        private long id;
+        private long id = 0;
         private Room room;
         private Wizard guest;
         private LocalDate beginDate;
