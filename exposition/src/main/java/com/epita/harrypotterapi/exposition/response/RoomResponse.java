@@ -1,13 +1,13 @@
 package com.epita.harrypotterapi.exposition.response;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class RoomResponse {
     private String name;
     private String type;
-    private int area;
-    private Date createdAt;
-    private String createdBy;
+    private double area;
+    private LocalDate creationDate;
+    private String creatorName;
 
     public String getName() {
         return name;
@@ -17,15 +17,35 @@ public class RoomResponse {
         return type;
     }
 
-    public int getArea() {
+    public double getArea() {
         return area;
     }
 
-    public Date getCreatedAt() {
-        return createdAt;
+    public LocalDate getCreationDate() {
+        return creationDate;
     }
 
-    public String getCreatedBy() {
-        return createdBy;
+    public String getCreatorName() {
+        return creatorName;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public void setArea(double area) {
+        this.area = area;
+    }
+
+    public void setCreationDate(LocalDate creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public void setCreatorName(String creatorName) {
+        this.creatorName = creatorName;
     }
 }
