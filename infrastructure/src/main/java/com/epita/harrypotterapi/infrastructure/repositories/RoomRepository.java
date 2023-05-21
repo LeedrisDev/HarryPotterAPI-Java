@@ -25,7 +25,6 @@ public class RoomRepository implements IRoomRepository {
 
     public Room CreateRoom(Room room) {
         var entity = RoomsMapper.mapToEntity(room);
-        System.out.println(entity);
         var savedEntity = this.roomRepository.save(entity);
         return RoomsMapper.mapToDomain(savedEntity);
     }
