@@ -1,5 +1,6 @@
 package com.epita.harrypotterapi.infrastructure.entities;
 
+import com.epita.harrypotterapi.domain.models.wizard.WizardRole;
 import jakarta.persistence.*;
 
 import java.util.List;
