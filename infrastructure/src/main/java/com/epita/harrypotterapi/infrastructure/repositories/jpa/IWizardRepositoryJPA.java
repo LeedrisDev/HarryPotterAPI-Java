@@ -1,4 +1,4 @@
-package com.epita.harrypotterapi.infrastructure.repositories;
+package com.epita.harrypotterapi.infrastructure.repositories.jpa;
 
 import com.epita.harrypotterapi.infrastructure.entities.WizardEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
