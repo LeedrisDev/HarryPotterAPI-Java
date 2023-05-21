@@ -30,8 +30,7 @@ public class WebSecurityConfig {
                 .requestMatchers("/login").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .formLogin().defaultSuccessUrl("/api/swagger-ui/index.html", true)
-                .permitAll();
+                .formLogin().defaultSuccessUrl("/api/swagger-ui/index.html", true);
 
         return http.build();
     }
