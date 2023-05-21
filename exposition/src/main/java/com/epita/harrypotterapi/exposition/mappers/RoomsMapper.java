@@ -4,6 +4,7 @@ import com.epita.harrypotterapi.domain.exceptions.RoomException;
 import com.epita.harrypotterapi.domain.models.room.Room;
 import com.epita.harrypotterapi.domain.models.room.RoomType;
 import com.epita.harrypotterapi.exposition.request.RoomRequest;
+import com.epita.harrypotterapi.exposition.response.BookingRoomResponse;
 import com.epita.harrypotterapi.exposition.response.RoomResponse;
 import org.springframework.stereotype.Component;
 
@@ -48,5 +49,42 @@ public class RoomsMapper {
         }
 
         return room.build();
+    }
+
+    public BookingRoomResponse mapToBookingRoomResponse(Room room) {
+        var response = new BookingRoomResponse();
+        response.setName(room.getName());
+        response.setArea(room.getArea());
+        response.setCreationDate(room.getCreationDate());
+        response.setCreatorName(room.getCreatorName());
+
+        switch (room.getType()) {
+            case Potion -> {
+                response.setType("Potion");
+                response.setBookable(true);
+            }
+            case Spell -> {
+                response.setType("Spell");
+                response.setBookable(true);
+            }
+            case Herbology -> {
+                response.setType("Herbology");
+                response.setBookable(true);
+            }
+            case Quidditch -> {
+                response.setType("Quidditch");
+                response.setBookable(true);
+            }
+            case Office -> {
+                response.setType("Office");
+                response.setBookable(false);
+            }
+            case CommonRoom -> {
+                response.setType("CommonRoom");
+                response.setBookable(false);
+            }
+        }
+
+        return response;
     }
 }
