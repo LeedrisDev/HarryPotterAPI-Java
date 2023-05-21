@@ -15,6 +15,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -24,7 +25,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -34,12 +34,14 @@ public class RoomsController {
 
     private final IRoomService roomService;
     private final CsvParser csvParser;
+    private final RoomsMapper mapper;
     private final String username = "Dumbledore";
 
     @Autowired
-    public RoomsController(IRoomService roomService, CsvParser csvParser) {
+    public RoomsController(IRoomService roomService, CsvParser csvParser, @Qualifier("Exposition.RoomsMapper") RoomsMapper mapper) {
         this.roomService = roomService;
         this.csvParser = csvParser;
+        this.mapper = mapper;
     }
 
     @PostMapping(value = "/room", produces = "application/json", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -64,9 +66,9 @@ public class RoomsController {
     public ResponseEntity<?> createRoom(@RequestBody RoomRequest request, Principal principal) {
 
         try {
-            var room = RoomsMapper.mapToDomain(request, username);
+            var room = mapper.mapToDomain(request, username);
             var roomCreated = roomService.CreateRoom(room);
-            var response = RoomsMapper.mapToResponse(roomCreated);
+            var response = mapper.mapToResponse(roomCreated);
             return new ResponseEntity<>(response, HttpStatus.CREATED);
         }
         catch (RoomException e) {
@@ -82,7 +84,7 @@ public class RoomsController {
     )
     public ResponseEntity<List<RoomResponse>> getRooms() {
         var rooms  = roomService.getAllRooms();
-        var response = rooms.stream().map(RoomsMapper::mapToResponse).toList();
+        var response = rooms.stream().map(mapper::mapToResponse).toList();
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -109,7 +111,7 @@ public class RoomsController {
         try {
             var rooms = csvParser.parseCsv(file, username);
             var roomsCreated = roomService.CreateRooms(rooms);
-            var response = roomsCreated.stream().map(RoomsMapper::mapToResponse).toList();
+            var response = roomsCreated.stream().map(mapper::mapToResponse).toList();
             return new ResponseEntity<>(response, HttpStatus.CREATED);
         }
         catch (RoomException e) {

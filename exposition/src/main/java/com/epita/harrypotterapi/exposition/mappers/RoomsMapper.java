@@ -5,11 +5,13 @@ import com.epita.harrypotterapi.domain.models.room.Room;
 import com.epita.harrypotterapi.domain.models.room.RoomType;
 import com.epita.harrypotterapi.exposition.request.RoomRequest;
 import com.epita.harrypotterapi.exposition.response.RoomResponse;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 
+@Component("Exposition.RoomsMapper")
 public class RoomsMapper {
-    public static RoomResponse mapToResponse(Room room) {
+    public RoomResponse mapToResponse(Room room) {
         var response = new RoomResponse();
         response.setName(room.getName());
         response.setArea(room.getArea());
@@ -28,7 +30,7 @@ public class RoomsMapper {
         return response;
     }
 
-    public static Room mapToDomain(RoomRequest request, String creatorName) throws RoomException {
+    public Room mapToDomain(RoomRequest request, String creatorName) throws RoomException {
         var room = new Room.Builder()
                 .name(request.getName())
                 .area(request.getArea())

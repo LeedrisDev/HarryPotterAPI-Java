@@ -2,9 +2,11 @@ package com.epita.harrypotterapi.infrastructure.mappers;
 
 import com.epita.harrypotterapi.domain.models.room.Room;
 import com.epita.harrypotterapi.infrastructure.entities.RoomEntity;
+import org.springframework.stereotype.Component;
 
+@Component("Infrastructure.RoomsMapper")
 public class RoomsMapper {
-    public static RoomEntity mapToEntity(Room room) {
+    public RoomEntity mapToEntity(Room room) {
         var entity = new RoomEntity();
         entity.setName(room.getName());
         entity.setType(room.getType());
@@ -14,7 +16,7 @@ public class RoomsMapper {
         return entity;
     }
 
-    public static Room mapToDomain(RoomEntity entity) {
+    public Room mapToDomain(RoomEntity entity) {
         return new Room.Builder()
                 .name(entity.getName())
                 .type(entity.getType())
