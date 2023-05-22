@@ -1,6 +1,6 @@
 package com.epita.harrypotterapi.exposition.controllers;
 
-import com.epita.harrypotterapi.application.IRoomService;
+import com.epita.harrypotterapi.application.services.room.IRoomService;
 import com.epita.harrypotterapi.domain.exceptions.RoomException;
 import com.epita.harrypotterapi.exposition.mappers.RoomsMapper;
 import com.epita.harrypotterapi.exposition.request.RoomRequest;

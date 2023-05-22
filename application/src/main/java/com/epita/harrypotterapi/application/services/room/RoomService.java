@@ -1,5 +1,6 @@
-package com.epita.harrypotterapi.application;
+package com.epita.harrypotterapi.application.services.room;
 
+import com.epita.harrypotterapi.application.services.room.IRoomService;
 import com.epita.harrypotterapi.domain.models.room.Room;
 import com.epita.harrypotterapi.infrastructure.repositories.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
