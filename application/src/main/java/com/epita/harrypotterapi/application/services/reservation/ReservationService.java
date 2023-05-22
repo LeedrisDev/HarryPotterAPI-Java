@@ -27,8 +27,6 @@ public class ReservationService implements IReservationService {
 
     public List<Reservation> getReservationsForAGivenRoom(String roomName) throws RoomException {
         var room = roomRepository.getRoomByName(roomName);
-        if (room == null)
-            throw new RoomException("Room with name " + roomName + " does not exist");
 
         return reservationRepository.getReservationsByRoom(room);
     }
@@ -37,10 +35,8 @@ public class ReservationService implements IReservationService {
         return null;
     }
 
-    public Reservation createReservation(String roomName, String wizardUsername, LocalDate beginDate, LocalDate endDate) throws ReservationException {
+    public Reservation createReservation(String roomName, String wizardUsername, LocalDate beginDate, LocalDate endDate) throws ReservationException, RoomException {
         var room = roomRepository.getRoomByName(roomName);
-        if (room == null)
-            throw new ReservationException("Room with name " + roomName + " does not exist.");
 
         var wizard = wizardRepository.getWizardByUsername(wizardUsername);
 
@@ -58,6 +54,12 @@ public class ReservationService implements IReservationService {
         }
 
         return reservationRepository.createReservation(reservation);
+    }
+
+    public List<Reservation> getReservationsForAGivenWizard(String wizardUsername) {
+        var wizard = wizardRepository.getWizardByUsername(wizardUsername);
+
+        return reservationRepository.getReservationsByWizard(wizard);
     }
 
     private boolean isDatesOverlaping(LocalDate start1, LocalDate end1, LocalDate start2, LocalDate end2) {
