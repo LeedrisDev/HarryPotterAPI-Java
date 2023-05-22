@@ -1,7 +1,10 @@
 package com.epita.harrypotterapi.exposition.response;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
 import java.time.LocalDate;
 
+@JsonPropertyOrder({"name", "type", "area", "creationDate", "creatorName", "isBookable"})
 public class BookingRoomResponse {
     private String name;
     private String type;
