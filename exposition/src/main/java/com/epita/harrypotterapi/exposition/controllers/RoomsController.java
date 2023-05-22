@@ -57,6 +57,10 @@ public class RoomsController {
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class))
             ),
             @ApiResponse(
+                    responseCode = "403",
+                    description = "Unauthorized"
+            ),
+            @ApiResponse(
                     responseCode = "409",
                     description = "Room already exists",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class))
@@ -76,10 +80,16 @@ public class RoomsController {
 
     @GetMapping(value = "/rooms", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Get all rooms")
-    @ApiResponse(
-            responseCode = "200", description = "A list of all rooms",
-            content = @Content(array = @ArraySchema(schema = @Schema(implementation = RoomResponse.class)))
-    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200", description = "A list of all rooms",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = RoomResponse.class)))
+            ),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "Unauthorized"
+            )
+    })
     public ResponseEntity<List<RoomResponse>> getRooms() {
         var rooms  = roomService.getAllRooms();
         var response = rooms.stream().map(mapper::mapToResponse).toList();
@@ -99,6 +109,10 @@ public class RoomsController {
                     responseCode = "400",
                     description = "Invalid input",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class))
+            ),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "Unauthorized"
             ),
             @ApiResponse(responseCode = "409",
                     description = "Room already exists",
