@@ -8,4 +8,5 @@ public interface IRoomRepository {
     List<Room> getAllRooms();
     Room CreateRoom(Room room);
     List<Room> CreateRooms(List<Room> rooms);
+    Room getRoomByName(String roomName);
 }
