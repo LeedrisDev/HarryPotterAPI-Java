@@ -1,8 +1,8 @@
 package com.epita.harrypotterapi.exposition.controllers;
 
 
-import com.epita.harrypotterapi.application.services.reservation.ReservationService;
-import com.epita.harrypotterapi.application.services.room.RoomService;
+import com.epita.harrypotterapi.application.services.reservation.IReservationService;
+import com.epita.harrypotterapi.application.services.room.IRoomService;
 import com.epita.harrypotterapi.domain.exceptions.ReservationException;
 import com.epita.harrypotterapi.domain.exceptions.RoomException;
 import com.epita.harrypotterapi.exposition.mappers.ReservationMapper;
@@ -31,13 +31,13 @@ import java.util.ArrayList;
 @RequestMapping("/api")
 @Tag(name = "Reservations")
 public class ReservationsController {
-    private final RoomService roomService;
-    private final ReservationService reservationService;
+    private final IRoomService roomService;
+    private final IReservationService reservationService;
     private final RoomsMapper roomsMapper;
     private final ReservationMapper reservationMapper;
 
     @Autowired
-    public ReservationsController(RoomService roomService, @Qualifier("Exposition.RoomsMapper") RoomsMapper roomsMapper, @Qualifier("Exposition.ReservationMapper") ReservationMapper reservationMapper, ReservationService reservationService) {
+    public ReservationsController(IRoomService roomService, @Qualifier("Exposition.RoomsMapper") RoomsMapper roomsMapper, @Qualifier("Exposition.ReservationMapper") ReservationMapper reservationMapper, IReservationService reservationService) {
         this.roomService = roomService;
         this.roomsMapper = roomsMapper;
         this.reservationMapper = reservationMapper;

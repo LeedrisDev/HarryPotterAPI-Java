@@ -7,10 +7,6 @@ import com.epita.harrypotterapi.domain.repositories.IReservationRepository;
 import com.epita.harrypotterapi.domain.repositories.IRoomRepository;
 import com.epita.harrypotterapi.domain.repositories.IWizardRepository;
 import com.epita.harrypotterapi.domain.services.IMailingService;
-import com.epita.harrypotterapi.infrastructure.repositories.ReservationRepository;
-import com.epita.harrypotterapi.infrastructure.repositories.RoomRepository;
-import com.epita.harrypotterapi.infrastructure.repositories.WizardRepository;
-import com.epita.harrypotterapi.infrastructure.services.MailingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
