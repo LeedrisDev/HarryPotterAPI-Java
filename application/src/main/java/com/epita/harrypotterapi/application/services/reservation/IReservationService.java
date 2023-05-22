@@ -12,4 +12,5 @@ public interface IReservationService {
     List<Reservation> getAvailabilitiesForAGivenRoom(String roomName);
     Reservation createReservation(String roomName, String wizardUsername, LocalDate beginDate, LocalDate endDate) throws RoomException, ReservationException;
     List<Reservation> getReservationsForAGivenWizard(String wizardUsername);
+    Reservation deleteReservationById(long reservationId) throws ReservationException;
 }

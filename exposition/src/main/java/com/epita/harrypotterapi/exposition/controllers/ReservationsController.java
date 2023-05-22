@@ -109,9 +109,26 @@ public class ReservationsController {
 
     @DeleteMapping(value = "/reservation/{id}", produces = "application/json")
     @Operation(summary = "Delete a reservation")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Reservation deleted",
+                    content = @Content(schema = @Schema(implementation = ReservationResponse.class))
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Reservation not found",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))
+            )
+    })
     public ResponseEntity<?> deleteReservation(@PathVariable("id") Long id) {
-        // TODO: Call ReservationService
-
-        return new ResponseEntity<>(null, HttpStatus.OK);
+        try {
+            var reservationDeleted = reservationService.deleteReservationById(id);
+            var response = reservationMapper.mapToResponse(reservationDeleted);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }
+        catch (ReservationException e) {
+            return new ResponseEntity<>(new ErrorResponse(e.getMessage()), HttpStatus.NOT_FOUND);
+        }
     }
 }

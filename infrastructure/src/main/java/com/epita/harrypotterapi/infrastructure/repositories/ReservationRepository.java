@@ -1,5 +1,6 @@
 package com.epita.harrypotterapi.infrastructure.repositories;
 
+import com.epita.harrypotterapi.domain.exceptions.ReservationException;
 import com.epita.harrypotterapi.domain.models.Reservation;
 import com.epita.harrypotterapi.domain.models.room.Room;
 import com.epita.harrypotterapi.domain.models.wizard.Wizard;
@@ -56,7 +57,14 @@ public class ReservationRepository implements IReservationRepository {
         return reservationsEntities.stream().map(reservationMapper::mapToDomain).toList();
     }
 
-    public void deleteReservationById(Long id) {
+    @Transactional
+    public Reservation deleteReservationById(Long id) throws ReservationException {
+        var reservationToDelete = reservationRepositoryJPA.findById(id);
+        if (reservationToDelete.isEmpty())
+            throw new ReservationException("Reservation with id " + id + " not found");
 
+        reservationRepositoryJPA.deleteById(id);
+
+        return reservationMapper.mapToDomain(reservationToDelete.get());
     }
 }

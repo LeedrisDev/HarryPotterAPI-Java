@@ -62,6 +62,10 @@ public class ReservationService implements IReservationService {
         return reservationRepository.getReservationsByWizard(wizard);
     }
 
+    public Reservation deleteReservationById(long reservationId) throws ReservationException {
+        return reservationRepository.deleteReservationById(reservationId);
+    }
+
     private boolean isDatesOverlaping(LocalDate start1, LocalDate end1, LocalDate start2, LocalDate end2) {
         return start1.isBefore(end2.plusDays(1)) && start2.isBefore(end1.plusDays(1));
     }
