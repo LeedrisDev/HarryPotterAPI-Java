@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import java.time.LocalDate;
 
-@JsonPropertyOrder({"ReservationId", "roomName", "reservedBy", "beginDate", "endDate"})
+@JsonPropertyOrder({"reservationId", "roomName", "reservedBy", "beginDate", "endDate"})
 public class ReservationResponse {
     private long ReservationId;
     private String roomName;
