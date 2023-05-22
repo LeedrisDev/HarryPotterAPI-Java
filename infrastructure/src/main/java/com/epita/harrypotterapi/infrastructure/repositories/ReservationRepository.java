@@ -52,7 +52,7 @@ public class ReservationRepository implements IReservationRepository {
     public List<Reservation> getReservationsByRoom(Room room) {
         var roomEntity = roomsMapper.mapToEntity(room);
 
-        var reservationsEntities = reservationRepositoryJPA.getReservationEntitiesByRoom(roomEntity);
+        var reservationsEntities = reservationRepositoryJPA.getReservationEntitiesByRoomOrderByBeginDate(roomEntity);
 
         return reservationsEntities.stream().map(reservationMapper::mapToDomain).toList();
     }
