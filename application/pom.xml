@@ -9,8 +9,6 @@
   </parent>
 
   <artifactId>application</artifactId>
-  <version>${parent.version}</version>
-  <name>application</name>
 
   <dependencies>
     <dependency>
@@ -26,8 +24,11 @@
     <dependency>
       <groupId>com.epita.harrypotterapi</groupId>
       <artifactId>infrastructure</artifactId>
-      <version>1.0-SNAPSHOT</version>
-      <scope>compile</scope>
+      <version>${project.parent.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.epita.harrypotterapi</groupId>
+      <artifactId>domain</artifactId>
     </dependency>
   </dependencies>
 </project>

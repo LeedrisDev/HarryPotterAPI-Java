@@ -10,8 +10,6 @@
   </parent>
 
   <artifactId>domain</artifactId>
-  <version>${parent.version}</version>
-  <name>domain</name>
 
   <dependencies>
     <dependency>

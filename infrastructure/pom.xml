@@ -10,8 +10,6 @@
   </parent>
 
   <artifactId>infrastructure</artifactId>
-  <version>${parent.version}</version>
-  <name>infrastructure</name>
 
   <dependencies>
     <dependency>
@@ -49,8 +47,7 @@
       <dependency>
           <groupId>com.epita.harrypotterapi</groupId>
           <artifactId>domain</artifactId>
-          <version>1.0-SNAPSHOT</version>
-          <scope>compile</scope>
+        <version>1.0-SNAPSHOT</version>
       </dependency>
   </dependencies>
 </project>
