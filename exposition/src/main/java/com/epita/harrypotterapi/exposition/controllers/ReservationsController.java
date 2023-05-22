@@ -4,16 +4,19 @@ package com.epita.harrypotterapi.exposition.controllers;
 import com.epita.harrypotterapi.application.services.reservation.ReservationService;
 import com.epita.harrypotterapi.application.services.room.RoomService;
 import com.epita.harrypotterapi.domain.exceptions.ReservationException;
+import com.epita.harrypotterapi.domain.exceptions.RoomException;
 import com.epita.harrypotterapi.exposition.mappers.ReservationMapper;
 import com.epita.harrypotterapi.exposition.mappers.RoomsMapper;
 import com.epita.harrypotterapi.exposition.request.ReservationRequest;
 import com.epita.harrypotterapi.exposition.response.BookingRoomResponse;
 import com.epita.harrypotterapi.exposition.response.ErrorResponse;
+import com.epita.harrypotterapi.exposition.response.ReservationResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -29,9 +32,9 @@ import java.util.ArrayList;
 @Tag(name = "Reservations")
 public class ReservationsController {
     private final RoomService roomService;
+    private final ReservationService reservationService;
     private final RoomsMapper roomsMapper;
     private final ReservationMapper reservationMapper;
-    private final ReservationService reservationService;
 
     @Autowired
     public ReservationsController(RoomService roomService, @Qualifier("Exposition.RoomsMapper") RoomsMapper roomsMapper, @Qualifier("Exposition.ReservationMapper") ReservationMapper reservationMapper, ReservationService reservationService) {
@@ -67,21 +70,39 @@ public class ReservationsController {
 
     @GetMapping(value = "/reservations", produces = "application/json")
     @Operation(summary = "Get all reservations the user has made")
+    @ApiResponse(
+            responseCode = "200",
+            description = "List of all reservations the user has made",
+            content = @Content(array = @ArraySchema(schema = @Schema(implementation = ReservationResponse.class)))
+    )
     public ResponseEntity<?> getUserReservations(Principal user) {
-        // TODO: Call ReservationService
+        var reservations = reservationService.getReservationsForAGivenWizard(user.getName());
+        var response = reservations.stream().map(reservationMapper::mapToResponse).toList();
 
-        return new ResponseEntity<>(null, HttpStatus.OK);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping(value = "/reservation", produces = "application/json")
     @Operation(summary = "Create a new reservation for a room")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Reservation created",
+                    content = @Content(schema = @Schema(implementation = BookingRoomResponse.class))
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Invalid request body",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))
+            )
+    })
     public ResponseEntity<?> createReservation(@RequestBody ReservationRequest request, Principal user) {
         try {
             var reservation = reservationService.createReservation(request.getRoomName(), user.getName(), request.getBeginDate(), request.getEndDate());
             var response = reservationMapper.mapToResponse(reservation);
             return new ResponseEntity<>(response, HttpStatus.OK);
         }
-        catch (ReservationException e) {
+        catch (ReservationException | RoomException e) {
             return new ResponseEntity<>(new ErrorResponse(e.getMessage()), HttpStatus.BAD_REQUEST);
         }
     }
