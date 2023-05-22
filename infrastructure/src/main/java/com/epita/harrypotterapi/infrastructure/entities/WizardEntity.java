@@ -1,5 +1,6 @@
 package com.epita.harrypotterapi.infrastructure.entities;
 
+import com.epita.harrypotterapi.domain.models.wizard.WizardRole;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -69,5 +70,17 @@ public class WizardEntity {
 
     public void setReservations(List<ReservationEntity> reservations) {
         this.reservations = reservations;
+    }
+
+    @Override
+    public String toString() {
+        return "WizardEntity{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", username='" + username + '\'' +
+                ", email='" + email + '\'' +
+                ", role=" + role +
+                ", reservations=" + reservations +
+                '}';
     }
 }

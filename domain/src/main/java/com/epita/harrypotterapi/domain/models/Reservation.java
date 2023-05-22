@@ -9,7 +9,7 @@ import java.time.LocalDate;
 public class Reservation {
     private long id;
     private Room room;
-    private Wizard guest;
+    private Wizard reservedBy;
     private LocalDate beginDate;
     private LocalDate endDate;
 
@@ -21,8 +21,8 @@ public class Reservation {
         return room;
     }
 
-    public Wizard getGuest() {
-        return guest;
+    public Wizard getReservedBy() {
+        return reservedBy;
     }
 
     public LocalDate getBeginDate() {
@@ -38,7 +38,7 @@ public class Reservation {
     public static class Builder {
         private long id = 0;
         private Room room;
-        private Wizard guest;
+        private Wizard reservedBy;
         private LocalDate beginDate;
         private LocalDate endDate;
 
@@ -48,46 +48,71 @@ public class Reservation {
         }
 
         public Builder room(Room room, Boolean toBookReservation) throws ReservationException {
-            switch (room.getType()) {
-                case CommonRoom, Office ->
-                        throw new ReservationException("Petrificus Totalus ! You can't reserve this room ! " +
-                                "Only Potion, Spell, Herbology and Quidditch rooms are bookable.");
-                default -> {
-                    this.room = room;
-                    return this;
+            if (toBookReservation) {
+                switch (room.getType()) {
+                    case CommonRoom, Office ->
+                            throw new ReservationException("Petrificus Totalus ! You can't reserve this room ! " +
+                                    "Only Potion, Spell, Herbology and Quidditch rooms are bookable.");
+                    default -> {
+                        this.room = room;
+                        return this;
+                    }
                 }
             }
-        }
 
-        public Builder room(Room room) throws ReservationException {
-            this.room(room, false);
+            this.room = room;
             return this;
         }
 
-        public Builder guest(Wizard guest) {
-            this.guest = guest;
+        public Builder room(Room room) {
+            this.room = room;
             return this;
         }
 
-        public Builder beginDate(LocalDate beginDate) throws ReservationException {
-            var now = LocalDate.now();
-            var maxReservationDate = now.plusMonths(1);
+        public Builder reservedBy(Wizard guest) {
+            this.reservedBy = guest;
+            return this;
+        }
 
-            if (beginDate.isAfter(maxReservationDate))
-                throw new ReservationException("You can't reserve a room more than one month in advance !");
+        public Builder beginDate(LocalDate beginDate, Boolean toBookReservation) throws ReservationException {
+            if (toBookReservation) {
+                var now = LocalDate.now();
+                var maxReservationDate = now.plusMonths(1);
 
-            if (beginDate.isBefore(now))
-                throw new ReservationException("You can't reserve a room in the past ! " +
-                        "Usage of Time-Turners is strictly prohibited");
+                if (beginDate.isAfter(maxReservationDate))
+                    throw new ReservationException("You can't reserve a room more than one month in advance !");
+
+                if (beginDate.isBefore(now))
+                    throw new ReservationException("You can't reserve a room in the past ! " +
+                            "Usage of Time-Turners is strictly prohibited");
+
+                this.beginDate = beginDate;
+                return this;
+            }
 
             this.beginDate = beginDate;
             return this;
         }
 
-        public Builder endDate(LocalDate endDate) throws ReservationException {
-            if (endDate.isBefore(this.beginDate))
-                throw new ReservationException("Begin date must be before end date ! This magic doesn't exist yet !");
+        public Builder beginDate(LocalDate beginDate) {
+            this.beginDate = beginDate;
+            return this;
+        }
 
+        public Builder endDate(LocalDate endDate, Boolean toBookReservation) throws ReservationException {
+            if (toBookReservation) {
+                if (endDate.isBefore(this.beginDate))
+                    throw new ReservationException("Begin date must be before end date ! This magic doesn't exist yet !");
+
+                this.endDate = endDate;
+                return this;
+            }
+
+            this.endDate = endDate;
+            return this;
+        }
+
+        public Builder endDate(LocalDate endDate) {
             this.endDate = endDate;
             return this;
         }
@@ -96,10 +121,21 @@ public class Reservation {
             Reservation reservation = new Reservation();
             reservation.id = this.id;
             reservation.room = this.room;
-            reservation.guest = this.guest;
+            reservation.reservedBy = this.reservedBy;
             reservation.beginDate = this.beginDate;
             reservation.endDate = this.endDate;
             return reservation;
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Reservation{" +
+                "id=" + id +
+                ", room=" + room +
+                ", reservedBy=" + reservedBy +
+                ", beginDate=" + beginDate +
+                ", endDate=" + endDate +
+                '}';
     }
 }

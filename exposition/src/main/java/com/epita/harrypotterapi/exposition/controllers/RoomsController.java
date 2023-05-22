@@ -1,6 +1,6 @@
 package com.epita.harrypotterapi.exposition.controllers;
 
-import com.epita.harrypotterapi.application.IRoomService;
+import com.epita.harrypotterapi.application.services.room.IRoomService;
 import com.epita.harrypotterapi.domain.exceptions.RoomException;
 import com.epita.harrypotterapi.exposition.mappers.RoomsMapper;
 import com.epita.harrypotterapi.exposition.request.RoomRequest;
@@ -35,7 +35,6 @@ public class RoomsController {
     private final IRoomService roomService;
     private final CsvParser csvParser;
     private final RoomsMapper mapper;
-    private final String username = "Dumbledore";
 
     @Autowired
     public RoomsController(IRoomService roomService, CsvParser csvParser, @Qualifier("Exposition.RoomsMapper") RoomsMapper mapper) {
@@ -58,15 +57,18 @@ public class RoomsController {
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class))
             ),
             @ApiResponse(
+                    responseCode = "403",
+                    description = "Unauthorized"
+            ),
+            @ApiResponse(
                     responseCode = "409",
                     description = "Room already exists",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class))
             )
     })
-    public ResponseEntity<?> createRoom(@RequestBody RoomRequest request, Principal principal) {
-
+    public ResponseEntity<?> createRoom(@RequestBody RoomRequest request, Principal user) {
         try {
-            var room = mapper.mapToDomain(request, username);
+            var room = mapper.mapToDomain(request, user.getName());
             var roomCreated = roomService.CreateRoom(room);
             var response = mapper.mapToResponse(roomCreated);
             return new ResponseEntity<>(response, HttpStatus.CREATED);
@@ -78,10 +80,16 @@ public class RoomsController {
 
     @GetMapping(value = "/rooms", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Get all rooms")
-    @ApiResponse(
-            responseCode = "200", description = "A list of all rooms",
-            content = @Content(array = @ArraySchema(schema = @Schema(implementation = RoomResponse.class)))
-    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200", description = "A list of all rooms",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = RoomResponse.class)))
+            ),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "Unauthorized"
+            )
+    })
     public ResponseEntity<List<RoomResponse>> getRooms() {
         var rooms  = roomService.getAllRooms();
         var response = rooms.stream().map(mapper::mapToResponse).toList();
@@ -102,14 +110,18 @@ public class RoomsController {
                     description = "Invalid input",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class))
             ),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "Unauthorized"
+            ),
             @ApiResponse(responseCode = "409",
                     description = "Room already exists",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class))
             )
     })
-    public ResponseEntity<?> createRoomsFromCsv(@RequestParam("file")MultipartFile file) {
+    public ResponseEntity<?> createRoomsFromCsv(@RequestParam("file")MultipartFile file, Principal user) {
         try {
-            var rooms = csvParser.parseCsv(file, username);
+            var rooms = csvParser.parseCsv(file, user.getName());
             var roomsCreated = roomService.CreateRooms(rooms);
             var response = roomsCreated.stream().map(mapper::mapToResponse).toList();
             return new ResponseEntity<>(response, HttpStatus.CREATED);

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 public class RoomsMapper {
     public RoomEntity mapToEntity(Room room) {
         var entity = new RoomEntity();
+        entity.setId(room.getId());
         entity.setName(room.getName());
         entity.setType(room.getType());
         entity.setArea(room.getArea());
@@ -18,6 +19,7 @@ public class RoomsMapper {
 
     public Room mapToDomain(RoomEntity entity) {
         return new Room.Builder()
+                .id(entity.getId())
                 .name(entity.getName())
                 .type(entity.getType())
                 .area(entity.getArea())
