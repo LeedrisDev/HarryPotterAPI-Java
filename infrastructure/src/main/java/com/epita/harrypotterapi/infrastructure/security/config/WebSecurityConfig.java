@@ -26,8 +26,10 @@ public class WebSecurityConfig {
                 .headers().frameOptions().disable()
                 .and()
                 .authorizeHttpRequests()
-                .requestMatchers("/api/swagger", "/api/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                .requestMatchers("/login").permitAll()
+                .requestMatchers(DIRECTOR_URLS.toArray(new String[0])).hasRole("DIRECTOR")
+                .requestMatchers(PROFESSOR_URLS.toArray(new String[0])).hasAnyRole("PROFESSOR", "DIRECTOR")
+                .requestMatchers(STUDENT_URLS.toArray(new String[0])).hasAnyRole("STUDENT", "PROFESSOR", "DIRECTOR")
+                .requestMatchers(PUBLIC_URLS.toArray(new String[0])).permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().defaultSuccessUrl("/api/swagger-ui/index.html", true);
@@ -87,15 +89,24 @@ public class WebSecurityConfig {
     private static final List<String> PUBLIC_URLS = List.of(
             "/api/swagger",
             "/api/swagger-ui/**",
-            "/api/swagger-ui.html",
+            "/v3/api-docs/**",
             "/login"
     );
 
-    private static final List<String> PROFESSOR_URLS = List.of(
-            "/api/reservations/room"
+    private static final List<String> DIRECTOR_URLS = List.of(
+            "/api/rooms/**",
+            "/api/room"
     );
 
-    private static final List<String> DIRECTOR_URLS = List.of(
-            "/api/rooms/**"
+    private static final List<String> PROFESSOR_URLS = List.of(
+            "/api/reservation/**"
+    );
+
+    private static final List<String> STUDENT_URLS = List.of(
+            "/api/reservations/**",
+            "/api/reservations/rooms/bookable",
+            "/api/reservations/room/availabilities",
+            "/api/reservations",
+            "/api/reservation"
     );
 }
