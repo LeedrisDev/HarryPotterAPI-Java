@@ -71,7 +71,7 @@ public class ReservationService implements IReservationService {
     }
 
     public Reservation deleteReservationById(long reservationId) throws ReservationException {
-        var reservationDeleted = reservationRepository.getReservationById(reservationId);
+        var reservationDeleted = reservationRepository.deleteReservationById(reservationId);
         mailingService.sendMailReservationDeleted(reservationDeleted.getReservedBy(), reservationDeleted);
 
         return reservationDeleted;

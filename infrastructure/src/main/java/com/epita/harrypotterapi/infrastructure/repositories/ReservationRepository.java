@@ -39,10 +39,6 @@ public class ReservationRepository implements IReservationRepository {
         return reservationMapper.mapToDomain(reservationSaved);
     }
 
-    public Reservation getReservationById(Long id) {
-        return null;
-    }
-
     public List<Reservation> getReservationsByWizard(Wizard wizard) {
         var reservationEntities = reservationRepositoryJPA.getReservationEntitiesByWizardId(wizard.getId());
 

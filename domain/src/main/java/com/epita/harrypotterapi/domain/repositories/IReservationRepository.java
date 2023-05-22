@@ -9,7 +9,6 @@ import java.util.List;
 
 public interface IReservationRepository {
     Reservation createReservation(Reservation reservation);
-    Reservation getReservationById(Long id);
     List<Reservation> getReservationsByWizard(Wizard wizard);
     List<Reservation> getReservationsByRoom(Room room);
     Reservation deleteReservationById(Long id) throws ReservationException;
