@@ -8,9 +8,7 @@ import com.epita.harrypotterapi.domain.exceptions.RoomException;
 import com.epita.harrypotterapi.exposition.mappers.ReservationMapper;
 import com.epita.harrypotterapi.exposition.mappers.RoomsMapper;
 import com.epita.harrypotterapi.exposition.request.ReservationRequest;
-import com.epita.harrypotterapi.exposition.response.BookingRoomResponse;
-import com.epita.harrypotterapi.exposition.response.ErrorResponse;
-import com.epita.harrypotterapi.exposition.response.ReservationResponse;
+import com.epita.harrypotterapi.exposition.response.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -25,7 +23,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
-import java.util.ArrayList;
 
 @RestController
 @RequestMapping("/api")
@@ -66,12 +63,33 @@ public class ReservationsController {
 
     @GetMapping(value = "/reservations/room/availabilities", produces = "application/json")
     @Operation(summary = "Get availabilities for a given room")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "List of all availabilities for a given room",
+                    content = @Content(schema = @Schema(implementation = RoomAvailabilitiesResponse.class))
+            ),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "Unauthorized"
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Room not found",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))
+            )
+    })
     public ResponseEntity<?> getAvailabilitiesForAGivenRoom(@RequestParam("roomName") String roomName) {
-        // TODO: Call ReservationService
-
-        var response = new ArrayList<>();
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        try {
+            var availableDates = reservationService.getAvailabilitiesForAGivenRoom(roomName);
+            var response = new RoomAvailabilitiesResponse();
+            response.setRoomName(roomName);
+            response.setAvailableDates(availableDates);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }
+        catch (RoomException e) {
+            return new ResponseEntity<>(new ErrorResponse(e.getMessage()), HttpStatus.NOT_FOUND);
+        }
     }
 
     @GetMapping(value = "/reservations", produces = "application/json")
@@ -100,7 +118,7 @@ public class ReservationsController {
             @ApiResponse(
                     responseCode = "200",
                     description = "Reservation created",
-                    content = @Content(schema = @Schema(implementation = BookingRoomResponse.class))
+                    content = @Content(schema = @Schema(implementation = RoomResponse.class))
             ),
             @ApiResponse(
                     responseCode = "400",
