@@ -1,5 +1,6 @@
 package com.epita.harrypotterapi.infrastructure.repositories;
 
+import com.epita.harrypotterapi.domain.exceptions.RoomException;
 import com.epita.harrypotterapi.domain.models.room.Room;
 import com.epita.harrypotterapi.domain.repositories.IRoomRepository;
 import com.epita.harrypotterapi.infrastructure.mappers.RoomsMapper;
@@ -41,8 +42,11 @@ public class RoomRepository implements IRoomRepository {
         return entitiesSaved.stream().map(mapper::mapToDomain).toList();
     }
 
-    public Room getRoomByName(String roomName) {
+    public Room getRoomByName(String roomName) throws RoomException {
         var roomEntity = this.roomRepository.getRoomEntityByName(roomName);
+        if (roomEntity == null)
+            throw new RoomException("Room '" + roomName + "' not found");
+
         return mapper.mapToDomain(roomEntity);
     }
 }

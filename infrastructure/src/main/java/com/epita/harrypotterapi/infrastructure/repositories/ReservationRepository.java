@@ -43,7 +43,9 @@ public class ReservationRepository implements IReservationRepository {
     }
 
     public List<Reservation> getReservationsByWizard(Wizard wizard) {
-        return null;
+        var reservationEntities = reservationRepositoryJPA.getReservationEntitiesByWizardId(wizard.getId());
+
+        return reservationEntities.stream().map(reservationMapper::mapToDomain).toList();
     }
 
     public List<Reservation> getReservationsByRoom(Room room) {
