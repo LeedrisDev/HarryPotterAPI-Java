@@ -3,9 +3,14 @@ package com.epita.harrypotterapi.application.services.reservation;
 import com.epita.harrypotterapi.domain.exceptions.ReservationException;
 import com.epita.harrypotterapi.domain.exceptions.RoomException;
 import com.epita.harrypotterapi.domain.models.Reservation;
+import com.epita.harrypotterapi.domain.repositories.IReservationRepository;
+import com.epita.harrypotterapi.domain.repositories.IRoomRepository;
+import com.epita.harrypotterapi.domain.repositories.IWizardRepository;
+import com.epita.harrypotterapi.domain.services.IMailingService;
 import com.epita.harrypotterapi.infrastructure.repositories.ReservationRepository;
 import com.epita.harrypotterapi.infrastructure.repositories.RoomRepository;
 import com.epita.harrypotterapi.infrastructure.repositories.WizardRepository;
+import com.epita.harrypotterapi.infrastructure.services.MailingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,24 +19,24 @@ import java.util.List;
 
 @Service
 public class ReservationService implements IReservationService {
-    private final WizardRepository wizardRepository;
-    private final RoomRepository roomRepository;
-    private final ReservationRepository reservationRepository;
+    private final IWizardRepository wizardRepository;
+    private final IRoomRepository roomRepository;
+    private final IReservationRepository reservationRepository;
+    private final IMailingService mailingService;
 
     @Autowired
-    public ReservationService(WizardRepository wizardRepository, RoomRepository roomRepository, ReservationRepository reservationRepository) {
+    public ReservationService(IWizardRepository wizardRepository, IRoomRepository roomRepository, IReservationRepository reservationRepository, IMailingService mailingService) {
         this.wizardRepository = wizardRepository;
         this.roomRepository = roomRepository;
         this.reservationRepository = reservationRepository;
+        this.mailingService = mailingService;
     }
 
-    public List<Reservation> getReservationsForAGivenRoom(String roomName) throws RoomException {
+    public List<Reservation> getAvailabilitiesForAGivenRoom(String roomName) throws RoomException {
         var room = roomRepository.getRoomByName(roomName);
 
-        return reservationRepository.getReservationsByRoom(room);
-    }
+        var reservations = reservationRepository.getReservationsByRoom(room);
 
-    public List<Reservation> getAvailabilitiesForAGivenRoom(String roomName) {
         return null;
     }
 
@@ -53,7 +58,10 @@ public class ReservationService implements IReservationService {
                 throw new ReservationException("Reservation dates are overlapping with another reservation, please choose another date.");
         }
 
-        return reservationRepository.createReservation(reservation);
+        var createdReservation = reservationRepository.createReservation(reservation);
+        mailingService.sendMailReservationCreated(createdReservation.getReservedBy(), reservation);
+
+        return createdReservation;
     }
 
     public List<Reservation> getReservationsForAGivenWizard(String wizardUsername) {
@@ -63,7 +71,10 @@ public class ReservationService implements IReservationService {
     }
 
     public Reservation deleteReservationById(long reservationId) throws ReservationException {
-        return reservationRepository.deleteReservationById(reservationId);
+        var reservationDeleted = reservationRepository.getReservationById(reservationId);
+        mailingService.sendMailReservationDeleted(reservationDeleted.getReservedBy(), reservationDeleted);
+
+        return reservationDeleted;
     }
 
     private boolean isDatesOverlaping(LocalDate start1, LocalDate end1, LocalDate start2, LocalDate end2) {
