@@ -1,0 +1,112 @@
+package com.epita.harrypotterapi.domain.models.room;
+
+import java.time.LocalDate;
+
+public class Room {
+    private long id;
+    private String name;
+    private RoomType type;
+    private double area;
+    private LocalDate creationDate;
+    private String creatorName;
+    private Boolean isBookable;
+
+    public long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public RoomType getType() {
+        return type;
+    }
+
+    public double getArea() {
+        return area;
+    }
+
+    public LocalDate getCreationDate() {
+        return creationDate;
+    }
+
+    public String getCreatorName() {
+        return creatorName;
+    }
+
+    public Boolean getBookable() {
+        return isBookable;
+    }
+
+    private Room() { }
+
+    public static class Builder {
+        private long id = 0;
+        private String name;
+        private RoomType type;
+        private double area;
+        private LocalDate creationDate;
+        private String creatorName;
+        private Boolean isBookable;
+
+        public Builder id(long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder name(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder type(RoomType type) {
+            this.type = type;
+            switch (type) {
+                case Potion, Spell, Herbology, Quidditch -> this.isBookable = true;
+                case Office, CommonRoom -> this.isBookable = false;
+            }
+            return this;
+        }
+
+        public Builder area(double area) {
+            this.area = area;
+            return this;
+        }
+
+        public Builder creationDate(LocalDate creationDate) {
+            this.creationDate = creationDate;
+            return this;
+        }
+
+        public Builder creatorName(String creatorName) {
+            this.creatorName = creatorName;
+            return this;
+        }
+
+        public Room build() {
+            Room room = new Room();
+            room.id = this.id;
+            room.name = this.name;
+            room.type = this.type;
+            room.area = this.area;
+            room.creationDate = this.creationDate;
+            room.creatorName = this.creatorName;
+            room.isBookable = this.isBookable;
+            return room;
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Room{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", type=" + type +
+                ", area=" + area +
+                ", creationDate=" + creationDate +
+                ", creatorName='" + creatorName + '\'' +
+                ", isBookable=" + isBookable +
+                '}';
+    }
+}

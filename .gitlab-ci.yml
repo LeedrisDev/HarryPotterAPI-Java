@@ -1,0 +1,22 @@
+image: maven:3.9.2-eclipse-temurin-11-alpine
+
+stages:
+  - build
+  - test
+
+variables:
+  MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
+
+cache:
+  paths:
+    - .m2/repository/
+
+build:
+  stage: build
+  script:
+    - mvn clean package -DskipTests
+
+test:
+  stage: test
+  script:
+    - mvn test
