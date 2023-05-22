@@ -46,11 +46,17 @@ public class ReservationsController {
 
     @GetMapping(value = "/reservations/rooms/bookable", produces = "application/json")
     @Operation(summary = "Get all rooms with bookable status")
-    @ApiResponse(
-            responseCode = "200",
-            description = "List of all rooms in the school, with bookable status",
-            content = @Content(array = @ArraySchema(schema = @Schema(implementation = BookingRoomResponse.class)))
-    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "List of all rooms in the school, with bookable status",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = BookingRoomResponse.class)))
+            ),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "Unauthorized"
+            )
+    })
     public ResponseEntity<?> getBookableRoomsWithBookableStatus() {
         var rooms = roomService.getAllRooms();
         var response = rooms.stream().map(roomsMapper::mapToBookingRoomResponse).toList();
@@ -70,11 +76,17 @@ public class ReservationsController {
 
     @GetMapping(value = "/reservations", produces = "application/json")
     @Operation(summary = "Get all reservations the user has made")
-    @ApiResponse(
-            responseCode = "200",
-            description = "List of all reservations the user has made",
-            content = @Content(array = @ArraySchema(schema = @Schema(implementation = ReservationResponse.class)))
-    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "List of all reservations the user has made",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = ReservationResponse.class)))
+            ),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "Unauthorized"
+            )
+    })
     public ResponseEntity<?> getUserReservations(Principal user) {
         var reservations = reservationService.getReservationsForAGivenWizard(user.getName());
         var response = reservations.stream().map(reservationMapper::mapToResponse).toList();
@@ -94,6 +106,10 @@ public class ReservationsController {
                     responseCode = "400",
                     description = "Invalid request body",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class))
+            ),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "Unauthorized"
             )
     })
     public ResponseEntity<?> createReservation(@RequestBody ReservationRequest request, Principal user) {
@@ -114,6 +130,10 @@ public class ReservationsController {
                     responseCode = "200",
                     description = "Reservation deleted",
                     content = @Content(schema = @Schema(implementation = ReservationResponse.class))
+            ),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "Unauthorized"
             ),
             @ApiResponse(
                     responseCode = "404",
