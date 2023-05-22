@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 public class WizardsMapper {
     public WizardEntity mapToEntity(Wizard wizard) {
         var wizardEntity = new WizardEntity();
+        wizardEntity.setId(wizard.getId());
         wizardEntity.setName(wizard.getName());
         wizardEntity.setUsername(wizard.getUsername());
         wizardEntity.setEmail(wizard.getEmail());
@@ -18,6 +19,7 @@ public class WizardsMapper {
 
     public Wizard mapToDomain(WizardEntity wizardEntity) {
         var wizard = new Wizard.Builder()
+                .id(wizardEntity.getId())
                 .name(wizardEntity.getName())
                 .username(wizardEntity.getUsername())
                 .role(wizardEntity.getRole());

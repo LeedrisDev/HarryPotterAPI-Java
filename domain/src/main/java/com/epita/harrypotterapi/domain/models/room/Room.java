@@ -3,12 +3,17 @@ package com.epita.harrypotterapi.domain.models.room;
 import java.time.LocalDate;
 
 public class Room {
+    private long id;
     private String name;
     private RoomType type;
     private double area;
     private LocalDate creationDate;
     private String creatorName;
     private Boolean isBookable;
+
+    public long getId() {
+        return id;
+    }
 
     public String getName() {
         return name;
@@ -37,12 +42,18 @@ public class Room {
     private Room() { }
 
     public static class Builder {
+        private long id = 0;
         private String name;
         private RoomType type;
         private double area;
         private LocalDate creationDate;
         private String creatorName;
         private Boolean isBookable;
+
+        public Builder id(long id) {
+            this.id = id;
+            return this;
+        }
 
         public Builder name(String name) {
             this.name = name;
@@ -75,6 +86,7 @@ public class Room {
 
         public Room build() {
             Room room = new Room();
+            room.id = this.id;
             room.name = this.name;
             room.type = this.type;
             room.area = this.area;
@@ -88,7 +100,8 @@ public class Room {
     @Override
     public String toString() {
         return "Room{" +
-                "name='" + name + '\'' +
+                "id=" + id +
+                ", name='" + name + '\'' +
                 ", type=" + type +
                 ", area=" + area +
                 ", creationDate=" + creationDate +
